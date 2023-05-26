@@ -1,10 +1,9 @@
 package com.itheima.reggie.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.itheima.reggie.entity.Category;
+import com.itheima.reggie.entity.Setmeal;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface CategoryService extends IService<Category> {
-    public void remove(Long ids);
+public interface SetmealService extends IService<Setmeal> {
 }
