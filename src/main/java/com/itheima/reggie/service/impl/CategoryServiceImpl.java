@@ -37,7 +37,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
         LambdaQueryWrapper<Setmeal> setmealQueryWraaper = new LambdaQueryWrapper<>();
         setmealQueryWraaper.eq(Setmeal::getCategoryId,ids);
-        int count2 = setmealService.count();
+        int count2 = setmealService.count(setmealQueryWraaper);
         if(count2 > 0){
             throw new CustomException("该分类下已经关联套餐，无法删除");
         }

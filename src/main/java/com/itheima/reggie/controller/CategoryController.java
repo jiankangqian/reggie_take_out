@@ -9,6 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+/**
+ * 分类管理
+ */
 @RestController
 @RequestMapping("/category")
 @Slf4j
@@ -34,10 +39,38 @@ public class CategoryController {
 
     }
     //http://localhost:8080/category?ids=1397844263642378242
+
+    /**
+     * 根据ids删除分类，如果分类关联菜品或者套餐，必须在业务逻辑上进行处理
+     * @param ids
+     * @return
+     */
     @DeleteMapping
     public R<String> delete(Long ids){
         log.info("要删除的菜品分类ids：{}",ids);
 //        categoryService.removeById(ids);
+        categoryService.remove(ids);
         return R.success("删除成功");
+    }
+
+    /**
+     * 修改分类
+     * @param category
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody Category category){
+        log.info("要修改的分类；{}",category);
+        categoryService.updateById(category);
+        return R.success("修改成功");
+    }
+
+    @GetMapping("/list")
+    public R<List<Category>> list(Category category){
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(category.getType() != null,Category::getType,category.getType());
+        queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+        List<Category> list = categoryService.list(queryWrapper);
+        return R.success(list);
     }
 }
